@@ -7,26 +7,30 @@ namespace TheDurkSalus.Controllers;
 public class Game
 {
 	private bool _playerTurn = false;
+	private bool _gameOver = false;
 	private int _roundNumber = 0;
+	private int _encounterNumber = 0;
 	private Team Allies { get; }
-	private Team Enemies {get;}
+	private Team Enemies {get; set; }
+	private List<Team> _enemyArmy;
 	
 	
 	public Game()
 	{
 		Allies = new Team(new ComputerPlayer());
-		Enemies = new Team(new ComputerPlayer());
+		_enemyArmy = EnemyArmyCreator.CreateArmy();
+		Enemies = _enemyArmy[0];
+		Console.WriteLine("Provide us with your name:");
 		string? playerName = Console.ReadLine();
 		Allies.AddMember(new MainCharacter(playerName));
-		
-		Enemies.AddMember(new Skeleton());
 	}
 
 
 	public void Run()
 	{
-		while (Allies.TeamMembers.Count > 0 && Enemies.TeamMembers.Count > 0)
+		while (!_gameOver)
 		{
+			Enemies = _enemyArmy[_encounterNumber];
 			_roundNumber++;
 			if (_playerTurn)
 			{
@@ -37,9 +41,35 @@ public class Game
 				TeamAction(Enemies);
 			}
 			_playerTurn = !_playerTurn;
+			CalculateBattleNumber();
+			DetermineWinner();
+			if (_gameOver) break;
 		}
 	}
 
+
+
+	private void CalculateBattleNumber()
+	{
+		if (Enemies.TeamMembers.Count < 0)
+		{
+			_encounterNumber++;
+		}
+	}
+	private void DetermineWinner()
+	{
+		if (_encounterNumber == _enemyArmy.Count && Allies.TeamMembers.Count > 0)
+		{
+			_gameOver = true;
+			Console.WriteLine("Humans Wins!");
+		}
+		else if(Allies.TeamMembers.Count < 0)
+		{
+			_gameOver = true;
+			Console.WriteLine("Monsters win!");
+		}
+	}
+	
 	private void TeamAction(Team team)
 	{
 		foreach (var member in team.TeamMembers)
