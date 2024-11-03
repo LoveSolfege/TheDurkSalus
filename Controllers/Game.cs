@@ -30,8 +30,12 @@ public class Game
 	{
 		while (!_gameOver)
 		{
-			Enemies = _enemyArmy[_encounterNumber];
+			CalculateBattleNumber();
+			DetermineWinner();
+			if (_gameOver) break;
+			
 			_roundNumber++;
+			Enemies = _enemyArmy[_encounterNumber];
 			if (_playerTurn)
 			{
 				TeamAction(Allies);
@@ -41,9 +45,6 @@ public class Game
 				TeamAction(Enemies);
 			}
 			_playerTurn = !_playerTurn;
-			CalculateBattleNumber();
-			DetermineWinner();
-			if (_gameOver) break;
 		}
 	}
 
@@ -51,7 +52,7 @@ public class Game
 
 	private void CalculateBattleNumber()
 	{
-		if (Enemies.TeamMembers.Count < 0)
+		if (Enemies.TeamMembers.Count == 0 &&  _encounterNumber < _enemyArmy.Count)
 		{
 			_encounterNumber++;
 		}
@@ -63,7 +64,7 @@ public class Game
 			_gameOver = true;
 			Console.WriteLine("Humans Wins!");
 		}
-		else if(Allies.TeamMembers.Count < 0)
+		else if(Allies.TeamMembers.Count == 0)
 		{
 			_gameOver = true;
 			Console.WriteLine("Monsters win!");
