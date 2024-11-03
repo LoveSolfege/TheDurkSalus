@@ -15,9 +15,16 @@ public class AttackAction : IAction
 		_target = target;
 	}
 
+	private void CalculateDamageDealt(Creature target, IAttack attack)
+	{
+		double hpLeft = target.ReceiveDamage(attack.Damage);
+		Console.WriteLine($"Damage dealt to {target.Name} is {attack.Damage} remaining HP {hpLeft}");
+	}
+	
 	public void Run(Game game, Creature creature)
 	{
 		Console.WriteLine($"Character {creature.Name} used {_attack.Name} on {_target.Name}");
+		CalculateDamageDealt(_target, _attack);
 	}
 	
 }

@@ -17,9 +17,9 @@ public class Game
 		Allies = new Team(new ComputerPlayer());
 		Enemies = new Team(new ComputerPlayer());
 		string? playerName = Console.ReadLine();
-		Allies.AddMember(new MainCharacter(playerName, 100));
+		Allies.AddMember(new MainCharacter(playerName));
 		
-		Enemies.AddMember(new Skeleton(5, true));
+		Enemies.AddMember(new Skeleton());
 	}
 
 

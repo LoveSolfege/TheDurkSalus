@@ -3,4 +3,5 @@
 public interface IAttack
 {
 	String Name { get; }
+	Double Damage { get; }
 }

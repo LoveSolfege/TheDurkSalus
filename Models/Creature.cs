@@ -2,18 +2,18 @@
 
 namespace TheDurkSalus.Models;
 
-public abstract class Creature : IAttack
+public abstract class Creature 
 {
 	public abstract string? Name { get; }
 	public abstract IAttack StandardAttack { get; }
-	public double Hp { get; protected set; }
-	public bool IsEnemy { get; protected set; }
+	public abstract double MaxHp { get;}
+	public abstract double CurrentHp { get; protected set; }
 
-	
-	protected Creature(double hp, bool isEnemy)
+
+	public double ReceiveDamage(double damage)
 	{
-		Hp = hp;
-		IsEnemy = isEnemy;
+		CurrentHp -= damage;
+		return CurrentHp;
 	}
 
 	public override string? ToString()

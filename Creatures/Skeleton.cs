@@ -1,4 +1,5 @@
 ﻿using TheDurkSalus.Actions.Attacks;
+using TheDurkSalus.Constants;
 using TheDurkSalus.Interfaces;
 using TheDurkSalus.Models;
 
@@ -8,10 +9,6 @@ public class Skeleton : Creature
 {
 	public override string Name => "Skeleton";
 	public override IAttack StandardAttack { get; } = new BoneCrunch();
-
-	public Skeleton(double hp, bool isEnemy) : base(hp, isEnemy)
-	{
-		
-	}
-	
+	public override double MaxHp { get; } = HealthPoints.SkeletonMaxHp;
+	public override double CurrentHp { get; protected set; } = HealthPoints.SkeletonMaxHp;
 }
