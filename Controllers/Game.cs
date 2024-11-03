@@ -1,6 +1,6 @@
-﻿using TheDurkSalus.Enums;
-using TheDurkSalus.Interfaces;
+﻿using TheDurkSalus.Creatures;
 using TheDurkSalus.Models;
+using TheDurkSalus.Players;
 
 namespace TheDurkSalus.Controllers;
 
@@ -8,63 +8,48 @@ public class Game
 {
 	private bool _playerTurn = false;
 	private int _roundNumber = 0;
-	private List<Creature> _allies;
-	private List<Creature> _enemies;
+	private Team Allies { get; }
+	private Team Enemies {get;}
 	
 	
 	public Game()
 	{
-		_allies = CreatureCreator.CreateCreature(1);
-		_enemies = CreatureCreator.CreateCreature(1);
+		Allies = new Team(new ComputerPlayer());
+		Enemies = new Team(new ComputerPlayer());
+		string? playerName = Console.ReadLine();
+		Allies.AddMember(new MainCharacter(playerName, 100));
+		
+		Enemies.AddMember(new Skeleton(5, true));
 	}
 
 
 	public void Run()
 	{
-		
-		while (_allies.Count > 0 && _enemies.Count > 0)
+		while (Allies.TeamMembers.Count > 0 && Enemies.TeamMembers.Count > 0)
 		{
 			_roundNumber++;
 			if (_playerTurn)
 			{
-				TeamAction(_allies);
+				TeamAction(Allies);
 			}
 			else
 			{
-				TeamAction(_enemies);
+				TeamAction(Enemies);
 			}
 			_playerTurn = !_playerTurn;
 		}
 	}
 
-	private double TeamAction(List<Creature> team)
+	private void TeamAction(Team team)
 	{
-		foreach (var member in team)
+		foreach (var member in team.TeamMembers)
 		{
 			Console.WriteLine($"Turn of {member.Name}..");
-			if (member is ICreatureAction creature)
-			{
-				Console.WriteLine($"{member.Name} did nothing.\n");
-				Thread.Sleep(5000);
-				return creature.DoAction(CreatureAction.Skip);
-			}
-			
-		}
-
-		throw new NotImplementedException();
-	}
-
-
-	private void PrintTeamMembers(params List<Creature>[] args)
-	{
-		foreach (var team in args)
-		{
-			foreach (var member in team)
-			{
-				Console.WriteLine($"{member.Name}\n");
-			}
+			team.Player.ChooseAction(this, member).Run(this, member);
+			Console.WriteLine(String.Empty);
 		}
 	}
 	
+	public Team GetEnemyPartyFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Enemies : Allies;
 	
 }
