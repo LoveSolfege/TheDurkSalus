@@ -5,6 +5,6 @@ namespace TheDurkSalus.Actions.Attacks;
 
 public class Punch : IAttack
 {
-	public string Name => "Punch";
+	public string Name => Names.Attacks.Punch;
 	public double Damage => AttackDamage.PunchDamage;
 }

@@ -8,8 +8,8 @@ namespace TheDurkSalus.Creatures;
 public class MainCharacter : Creature
 {
 	public override string? Name { get; }
-	public override IAttack StandardAttack { get; } = new Punch();
-	public override double MaxHp { get; } = HealthPoints.PlayerMaxHp;
+	public override IAttack StandardAttack => new Punch();
+	public override double MaxHp => HealthPoints.PlayerMaxHp;
 	public override double CurrentHp { get; protected set; } = HealthPoints.PlayerMaxHp;
 
 	public MainCharacter(string? name) : base()
