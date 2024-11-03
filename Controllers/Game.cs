@@ -49,7 +49,12 @@ public class Game
 			Console.WriteLine(String.Empty);
 		}
 	}
+
+	public void RemoveFromTeam(Creature creature, Team team)
+	{
+		team.TeamMembers.Remove(creature);
+	}
 	
-	public Team GetEnemyPartyFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Enemies : Allies;
-	
+	public Team GetEnemyTeamFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Enemies : Allies;
+	public Team GetTeamFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Allies : Enemies;
 }
