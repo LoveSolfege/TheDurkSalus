@@ -10,10 +10,9 @@ public abstract class Creature
 	public abstract double CurrentHp { get; protected set; }
 
 
-	public double ReceiveDamage(double damage)
+	public void ReceiveDamage(double damage)
 	{
 		CurrentHp -= damage;
-		return CurrentHp;
 	}
 
 	public override string? ToString()

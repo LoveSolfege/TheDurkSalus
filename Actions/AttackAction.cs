@@ -17,8 +17,9 @@ public class AttackAction : IAction
 
 	private void CalculateDamageDealt(Creature target, IAttack attack)
 	{
-		double hpLeft = target.ReceiveDamage(attack.Damage);
-		Console.WriteLine($"Damage dealt to {target.Name} is {attack.Damage} remaining HP {hpLeft}");
+		target.ReceiveDamage(attack.Damage);
+		Console.WriteLine($"Damage dealt to {target.Name} is {attack.Damage}");
+		Console.WriteLine($"{target.Name} is now at {target.CurrentHp}/{target.MaxHp}");
 	}
 	
 	public void Run(Game game, Creature creature)
