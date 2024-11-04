@@ -9,7 +9,7 @@ public class FinalBoss : Creature
 {
 	
 	public override string? Name => Names.Creatures.FinalBossName;
-	public override IAttack StandardAttack => new Punch();
+	public override IAttack StandardAttack => new UnravellingAttack();
 	public override double MaxHp => HealthPoints.FinalBossHp;
 	public override double CurrentHp { get; protected set; } = HealthPoints.FinalBossHp;
 
