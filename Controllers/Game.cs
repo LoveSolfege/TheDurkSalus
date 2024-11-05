@@ -17,7 +17,7 @@ public class Game
 	
 	public Game()
 	{
-		Allies = new Team(new ComputerPlayer());
+		Allies = new Team(new ConsolePlayer());
 		_enemyArmy = EnemyArmyCreator.CreateArmy();
 		Enemies = _enemyArmy[0];
 		Console.WriteLine("Provide us with your name:");
