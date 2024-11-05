@@ -11,7 +11,7 @@ public static class PropertyUtils
 		{
 			if (property.PropertyType == typeof(T))
 			{
-				propertyList.Add((property.Name, property.GetValue(obj)));
+				propertyList.Add((property.Name, property.GetValue(obj))!);
 			}
 		}
 
