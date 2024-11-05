@@ -1,6 +1,7 @@
 ﻿using TheDurkSalus.Creatures;
 using TheDurkSalus.Models;
 using TheDurkSalus.Players;
+using TheDurkSalus.Utils;
 
 namespace TheDurkSalus.Controllers;
 
@@ -20,8 +21,7 @@ public class Game
 		Allies = new Team(new ConsolePlayer());
 		_enemyArmy = EnemyArmyCreator.CreateArmy();
 		Enemies = _enemyArmy[0];
-		Console.WriteLine("Provide us with your name:");
-		string? playerName = Console.ReadLine();
+		string? playerName = ConsoleUtils.Prompt("Provide us with your name: ");
 		Allies.AddMember(new MainCharacter(playerName));
 	}
 
@@ -62,12 +62,12 @@ public class Game
 		if (_encounterNumber == _enemyArmy.Count && Allies.TeamMembers.Count > 0)
 		{
 			_gameOver = true;
-			Console.WriteLine("Humans Wins!");
+			ConsoleUtils.WriteLine("Humans Wins!", ConsoleColor.Green);
 		}
 		else if(Allies.TeamMembers.Count == 0)
 		{
 			_gameOver = true;
-			Console.WriteLine("Monsters win!");
+			ConsoleUtils.WriteLine("Monsters win!", ConsoleColor.Red);
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class Game
 	{
 		foreach (var member in team.TeamMembers)
 		{
-			Console.WriteLine($"Turn of {member.Name}..");
+			ConsoleUtils.WriteLine($"Turn of {member.Name}..", ConsoleColor.DarkCyan);
 			team.Player.ChooseAction(this, member).Run(this, member);
 			Console.WriteLine(String.Empty);
 		}
@@ -88,4 +88,5 @@ public class Game
 	
 	public Team GetEnemyTeamFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Enemies : Allies;
 	public Team GetTeamFor(Creature creature) => Allies.TeamMembers.Contains(creature) ? Allies : Enemies;
+	public bool IsEnemy(Creature creature) => !Allies.TeamMembers.Contains(creature);
 }

@@ -1,6 +1,7 @@
 ﻿using TheDurkSalus.Controllers;
 using TheDurkSalus.Interfaces;
 using TheDurkSalus.Models;
+using TheDurkSalus.Utils;
 
 namespace TheDurkSalus.Actions;
 
@@ -19,21 +20,22 @@ public class AttackAction : IAction
 	{
 		double damage = attack.Damage;
 		target.ReceiveDamage(damage);
-		Console.WriteLine($"Damage dealt to {target.Name} is {damage}");
+		ConsoleUtils.WriteLine($"Damage dealt to {target.Name} is {damage}",
+			damage > 0 ? ConsoleColor.DarkYellow : ConsoleColor.DarkGray);
 		if (target.CurrentHp <= 0)
 		{
 			game.RemoveFromTeam(target, game.GetTeamFor(target));
-			Console.WriteLine($"{target.Name} has died.");
+			ConsoleUtils.WriteLine($"{target.Name} has died.", ConsoleColor.Red);
 		}
 		else
 		{
-			Console.WriteLine($"{target.Name} is now at {target.CurrentHp}/{target.MaxHp}");
+			ConsoleUtils.WriteLine($"{target.Name} is now at {target.CurrentHp}/{target.MaxHp}", game.IsEnemy(target) ? ConsoleColor.DarkRed : ConsoleColor.Blue);
 		}
 	}
 	
 	public void Run(Game game, Creature creature)
 	{
-		Console.WriteLine($"Character {creature.Name} used {_attack.Name} on {_target.Name}");
+		ConsoleUtils.WriteLine($"Character {creature.Name} used {_attack.Name} on {_target.Name}", ConsoleColor.White);
 		CalculateDamageDealt(game, _target, _attack);
 	}
 	
