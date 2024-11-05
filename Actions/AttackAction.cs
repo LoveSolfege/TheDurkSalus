@@ -17,8 +17,9 @@ public class AttackAction : IAction
 
 	private void CalculateDamageDealt(Game game, Creature target, IAttack attack)
 	{
-		target.ReceiveDamage(attack.Damage);
-		Console.WriteLine($"Damage dealt to {target.Name} is {attack.Damage}");
+		double damage = attack.Damage;
+		target.ReceiveDamage(damage);
+		Console.WriteLine($"Damage dealt to {target.Name} is {damage}");
 		if (target.CurrentHp <= 0)
 		{
 			game.RemoveFromTeam(target, game.GetTeamFor(target));
