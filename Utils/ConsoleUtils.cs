@@ -16,6 +16,11 @@ public static class ConsoleUtils
 		Console.ResetColor();
 	}
 
+	public static void ClearAndWriteLine(string text, ConsoleColor color = ConsoleColor.Gray){
+		Console.Clear();
+		WriteLine(text, color);
+	}
+	
 	public static string Prompt(string questionToAsk)
 	{
 		Console.ForegroundColor = ConsoleColor.Gray;

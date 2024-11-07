@@ -1,4 +1,5 @@
-﻿using TheDurkSalus.Creatures;
+﻿using TheDurkSalus.Constants;
+using TheDurkSalus.Creatures;
 using TheDurkSalus.Models;
 using TheDurkSalus.Players;
 using TheDurkSalus.Utils;
@@ -7,7 +8,7 @@ namespace TheDurkSalus.Controllers;
 
 public class Game
 {
-	private bool _playerTurn = false;
+	private bool _playerTurn = Random.Shared.Next(2) != 0; 
 	private bool _gameOver = false;
 	private int _roundNumber = 0;
 	private int _encounterNumber = 0;
@@ -21,13 +22,14 @@ public class Game
 		Allies = new Team(new ConsolePlayer());
 		_enemyArmy = EnemyArmyCreator.CreateArmy();
 		Enemies = _enemyArmy[0];
-		string? playerName = ConsoleUtils.Prompt("Provide us with your name: ");
+		string? playerName = ConsoleUtils.Prompt(GameText.AskForName);
 		Allies.AddMember(new MainCharacter(playerName));
 	}
 
 
 	public void Run()
 	{
+		ConsoleUtils.ClearAndWriteLine(_playerTurn ? GameText.AlliesStart : GameText.EnemiesStart, ConsoleColor.Cyan);
 		while (!_gameOver)
 		{
 			CalculateBattleNumber();
@@ -62,12 +64,12 @@ public class Game
 		if (_encounterNumber == _enemyArmy.Count && Allies.TeamMembers.Count > 0)
 		{
 			_gameOver = true;
-			ConsoleUtils.WriteLine("Humans Wins!", ConsoleColor.Green);
+			ConsoleUtils.WriteLine(GameText.AlliesWin, ConsoleColor.Green);
 		}
 		else if(Allies.TeamMembers.Count == 0)
 		{
 			_gameOver = true;
-			ConsoleUtils.WriteLine("Monsters win!", ConsoleColor.Red);
+			ConsoleUtils.WriteLine(GameText.EnemiesWin, ConsoleColor.Red);
 		}
 	}
 	
@@ -75,7 +77,7 @@ public class Game
 	{
 		foreach (var member in team.TeamMembers)
 		{
-			ConsoleUtils.WriteLine($"Turn of {member.Name}..", ConsoleColor.DarkCyan);
+			ConsoleUtils.WriteLine($"Turn of {member.Name}", ConsoleColor.DarkCyan);
 			team.Player.ChooseAction(this, member).Run(this, member);
 			Console.WriteLine(String.Empty);
 		}

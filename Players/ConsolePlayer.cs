@@ -42,7 +42,7 @@ public class ConsolePlayer : IPlayer
 				IAttack attackObj = (IAttack)attack.Value;
 
 				choices.Add(new MenuChoice(
-					$"{title.CutOnCapitals()} {attackObj.Name}", 
+					$"{title.CutOnCapitals()} - {attackObj.Name}", 
 					new AttackAction(attackObj, opponentTeam.TeamMembers[0])
 				));
 			}
