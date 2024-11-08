@@ -8,10 +8,10 @@ namespace TheDurkSalus.Controllers;
 
 public class Game
 {
+	private int _encounterNumber = 0;
 	private bool _playerTurn = Random.Shared.Next(2) != 0; 
 	private bool _gameOver = false;
 	private int _roundNumber = 0;
-	private int _encounterNumber = 0;
 	private Team Allies { get; }
 	private Team Enemies {get; set; }
 	private List<Team> _enemyArmy;
@@ -29,7 +29,8 @@ public class Game
 
 	public void Run()
 	{
-		ConsoleUtils.ClearAndWriteLine(_playerTurn ? GameText.AlliesStart : GameText.EnemiesStart, ConsoleColor.Cyan);
+		StatusPrinter.StartingTeam(_playerTurn);
+		StatusPrinter.TeamsInfo(Allies, Enemies, _roundNumber, _encounterNumber);
 		while (!_gameOver)
 		{
 			CalculateBattleNumber();
@@ -37,14 +38,18 @@ public class Game
 			if (_gameOver) break;
 			
 			_roundNumber++;
-			Enemies = _enemyArmy[_encounterNumber];
+			Enemies = _enemyArmy[_encounterNumber];//Select encounter team according to wave (encounter) number
+			
+			
 			if (_playerTurn)
 			{
 				TeamAction(Allies);
+				TeamAction(Enemies);
 			}
 			else
 			{
 				TeamAction(Enemies);
+				TeamAction(Allies);
 			}
 			_playerTurn = !_playerTurn;
 		}
@@ -59,6 +64,8 @@ public class Game
 			_encounterNumber++;
 		}
 	}
+	
+	
 	private void DetermineWinner()
 	{
 		if (_encounterNumber == _enemyArmy.Count && Allies.TeamMembers.Count > 0)
