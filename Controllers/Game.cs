@@ -9,7 +9,7 @@ namespace TheDurkSalus.Controllers;
 public class Game
 {
 	private int _encounterNumber = 0;
-	private bool _playerTurn = Random.Shared.Next(2) != 0; 
+	private bool _playerStarts = Random.Shared.Next(2) != 0; 
 	private bool _gameOver = false;
 	private int _roundNumber = 0;
 	private Team Allies { get; }
@@ -29,8 +29,8 @@ public class Game
 
 	public void Run()
 	{
-		StatusPrinter.StartingTeam(_playerTurn);
-		StatusPrinter.TeamsInfo(Allies, Enemies, _roundNumber, _encounterNumber);
+		StatusPrinter.TeamsInfo(//print initial status, starting team, round number etc
+			Allies, Enemies, _roundNumber, _encounterNumber, StatusPrinter.StartingTeamInfo(_playerStarts));
 		while (!_gameOver)
 		{
 			CalculateBattleNumber();
@@ -40,31 +40,38 @@ public class Game
 			_roundNumber++;
 			Enemies = _enemyArmy[_encounterNumber];//Select encounter team according to wave (encounter) number
 			
-			
-			if (_playerTurn)
-			{
-				TeamAction(Allies);
-				TeamAction(Enemies);
-			}
+			if (_playerStarts)
+				PlayerStarts();
 			else
-			{
-				TeamAction(Enemies);
-				TeamAction(Allies);
-			}
-			_playerTurn = !_playerTurn;
+				EnemyStarts();
 		}
 	}
 
 
+	private void PlayerStarts()
+	{
+		TeamAction(Allies);
+		TeamAction(Enemies);
+	}
+
+	private void EnemyStarts()
+	{
+		TeamAction(Enemies);
+		TeamAction(Allies);	
+	}
+	
 
 	private void CalculateBattleNumber()
 	{
 		if (Enemies.TeamMembers.Count == 0 &&  _encounterNumber < _enemyArmy.Count)
 		{
 			_encounterNumber++;
+			_playerStarts = true;
+			StatusPrinter.TeamsInfo(Allies, Enemies, _roundNumber, _encounterNumber, GameText.EncounterPassed);
 		}
 	}
 	
+
 	
 	private void DetermineWinner()
 	{

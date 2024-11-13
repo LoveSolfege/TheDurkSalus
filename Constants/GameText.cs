@@ -7,6 +7,6 @@ public static class GameText
 	public static string AlliesWin => "Humans win!";
 	public static string EnemiesWin => "Monsters win!";
 	public static string AskForName => "Tell us your name: ";
-	
-	
+	public static string EncounterPassed => "Humans passed the first wave!";
+
 }
