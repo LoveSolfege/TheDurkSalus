@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Channels;
 using TheDurkSalus.Actions;
 using TheDurkSalus.Controllers;
@@ -17,8 +18,16 @@ public class ConsolePlayer : IPlayer
 			ConsoleUtils.WriteLine($"{index + 1} - {choices[index].Description}",choices[index].Available ? ConsoleColor.Gray : ConsoleColor.DarkGray);
 
 		string choice = ConsoleUtils.Prompt("What do you want to do?");
-		int menuIndex = Convert.ToInt32(choice) - 1;
 
+		if (int.TryParse(choice, out int menuIndex))
+		{
+			menuIndex -= 1;
+		}
+		else
+		{
+			ConsoleUtils.WriteLine($"{choice} is not a valid number", ConsoleColor.Red);	
+		}
+		
 		if (choices[menuIndex].Available) return choices[menuIndex].Action!;
 
 		return new DoNothingAction();
