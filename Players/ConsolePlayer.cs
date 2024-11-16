@@ -13,7 +13,6 @@ public class ConsolePlayer : IPlayer
 	public IAction ChooseAction(Game game, Creature creature)
 	{
 		List<MenuChoice> choices = CreateMenuOptions(game, creature);
-
 		for (int index = 0; index < choices.Count; index++)
 			ConsoleUtils.WriteLine($"{index + 1} - {choices[index].Description}",choices[index].Available ? ConsoleColor.Gray : ConsoleColor.DarkGray);
 
@@ -25,10 +24,18 @@ public class ConsolePlayer : IPlayer
 		}
 		else
 		{
-			ConsoleUtils.WriteLine($"{choice} is not a valid number", ConsoleColor.Red);	
+			ConsoleUtils.WriteLine($"{choice} is not a valid number", ConsoleColor.Red);
 		}
+
 		
-		if (choices[menuIndex].Available) return choices[menuIndex].Action!;
+		try
+		{
+			if (choices[menuIndex].Available) return choices[menuIndex].Action!;
+		}
+		catch (ArgumentOutOfRangeException e)
+		{
+			ConsoleUtils.WriteLine("That was a weird number to pick...", ConsoleColor.Red);
+		}
 
 		return new DoNothingAction();
 	}
