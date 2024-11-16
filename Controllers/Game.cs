@@ -33,12 +33,11 @@ public class Game
 			Allies, Enemies, _roundNumber, _encounterNumber, StatusPrinter.StartingTeamInfo(_playerStarts));
 		while (!_gameOver)
 		{
-			CalculateBattleNumber();
+			ChangeEncounter();
 			DetermineWinner();
 			if (_gameOver) break;
 			
 			_roundNumber++;
-			Enemies = _enemyArmy[_encounterNumber];//Select encounter team according to wave (encounter) number
 			
 			if (_playerStarts)
 				PlayerStarts();
@@ -61,12 +60,13 @@ public class Game
 	}
 	
 
-	private void CalculateBattleNumber()
+	private void ChangeEncounter()
 	{
 		if (Enemies.TeamMembers.Count == 0 &&  _encounterNumber < _enemyArmy.Count)
 		{
 			_encounterNumber++;
 			_playerStarts = true;
+			Enemies = _enemyArmy[_encounterNumber];//Select encounter team according to wave (encounter) number
 			StatusPrinter.TeamsInfo(Allies, Enemies, _roundNumber, _encounterNumber, GameText.EncounterPassed);
 		}
 	}
